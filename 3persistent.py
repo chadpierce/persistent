@@ -30,16 +30,20 @@ input_file = sys.argv[1]
 chunk_size = timedelta(minutes=5)
 output_rows = 10
 
+timestamp_col = 0
+source_ip_col = 1
+dest_ip_col = 2
+
 def get_chunk(timestamp):
     dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S %Z')
     return dt - (dt - datetime.min) % chunk_size
 
 with open(input_file) as f:
     reader = csv.reader(f)
-    next(reader) # skip header row
+    #next(reader) # skip header row
     counts = defaultdict(set)
     for row in reader:
-        timestamp, source_ip, dest_ip, _, _ = row
+        timestamp, source_ip, dest_ip = row[timestamp_col], row[source_ip_col], row[dest_ip_col]
         chunk = get_chunk(timestamp)
         counts[(source_ip, dest_ip)].add(chunk)
 
