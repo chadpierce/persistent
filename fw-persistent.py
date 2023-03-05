@@ -45,7 +45,7 @@ indexSourceIP = 1
 indexDestIP = 2
 # TODO do something with bytes
 
-chunkInterval = 1
+chunkInterval = 5
 numbertoreport = 50
 lastmin = 0
 min = 0
