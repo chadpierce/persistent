@@ -7,6 +7,8 @@ This version of the script keeps track of the bytes_sent and bytes_received valu
 The get_stats function takes a list of values (either bytes_sent or bytes_received) and returns a string with statistics on those values. In this case it calculates the total and average number of bytes.
 
 You can still change the number of rows in the output and size of each chunk by setting output_rows and chunk_size, respectively.
+
+prompt: rewrite the script but make the csv rows easily modifiable by creating variables that equal the column number
 '''
 import csv
 from collections import defaultdict
@@ -17,9 +19,17 @@ input_file = sys.argv[1]
 chunk_size = timedelta(minutes=5)
 output_rows = 10
 
+timestamp_col = 0
+source_ip_col = 1
+dest_ip_col = 2
+bytes_sent_col = 3
+bytes_received_col = 4
+
+
 def get_chunk(timestamp):
     dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S %Z')
     return dt - (dt - datetime.min) % chunk_size
+
 
 def get_stats(values):
     values = list(map(int, values))
@@ -27,14 +37,17 @@ def get_stats(values):
     avg = total / len(values)
     return f'total: {total}, avg: {avg:.2f}'
 
+
 with open(input_file) as f:
     reader = csv.reader(f)
-    next(reader) # skip header row
+    next(reader)  # skip header row
     counts = defaultdict(set)
     sent_stats = defaultdict(list)
     recv_stats = defaultdict(list)
     for row in reader:
-        timestamp, source_ip, dest_ip, bytes_sent, bytes_received = row
+        timestamp, source_ip, dest_ip, bytes_sent, bytes_received \
+            = row[timestamp_col], row[source_ip_col], row[dest_ip_col], \
+            row[bytes_sent_col], row[bytes_received_col]
         chunk = get_chunk(timestamp)
         pair = (source_ip, dest_ip)
         counts[pair].add(chunk)
