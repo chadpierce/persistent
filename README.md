@@ -38,3 +38,17 @@ Count Client            Remote Site
 ```
 
 Using real data won't provide such clear results, but good enough for a POC.  
+
+## Variations
+
+Bing chat was prompted to re-create the original port of the persistent script, with the hope that it was coded in a more pythonic way. I think this was fairly successful. With some heavy filtering, this script has been useful. 
+
+The 'new' version of the script is `3persistent.py`  
+
+`4persistent.py` adds some analysis to the amount of data being transferred.  
+
+`5persistent.py` adds a count of the total number of events for each IP pair, results from this script are useful if sorted by that count, like: `sort -rnk3 file.out`
+
+`6persistent.py` adds a basic beacon rating that is probably not great - not yet tested
+
+`7persistent.py` is an entirely new script written by bing chat, prompts are in the comments - not yet tested. 
